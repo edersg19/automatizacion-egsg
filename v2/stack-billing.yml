@@ -8,7 +8,7 @@ service:
     volumes:
       - ./dbfiles:/docker-entrypoint-initdb.d
       - ./postgres_data:/var/lib/postgresql/data # ruta externa:ruta interna (contenedor)
-    environments:
+    environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: qwerty
       POSTGRES_DB: postgres
