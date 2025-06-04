@@ -30,7 +30,7 @@ billingapp_back:
     args:
       - JAR_FILE=*.jar
       - DB_PASSWORD=qwerty
-    container_name: billingapp-back
+    container_name: billingapp_back
     # Variables de entorno 
     # (Xms) hace referencia a la memoria mínima global necesaria
     # (Xmx) hace referencia a la memoria máxima global necesaria
@@ -44,11 +44,11 @@ billingapp_back:
       - 8080:8080
 
   # Billing App Frontend Service
-  billingapp_front:
-    build:
-      context: ./angular
-    container_name: billingapp_front
-    depends_on:
-      - billingapp_back
-    ports:
-      - 80:80
+billingapp_front:
+  build:
+    context: ./angular
+  container_name: billingapp_front
+  depends_on:
+    - billingapp_back
+  ports:
+    - 80:80
