@@ -30,7 +30,7 @@ billingapp_back:
     args:
       - JAR_FILE=*.jar
       - DB_PASSWORD=qwerty
-    container_name: billingapp_back
+    container_name: billingapp-back
     # Variables de entorno 
     # (Xms) hace referencia a la memoria mínima global necesaria
     # (Xmx) hace referencia a la memoria máxima global necesaria
