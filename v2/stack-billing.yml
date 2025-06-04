@@ -1,4 +1,4 @@
-service:
+services:
   postgres_db:
     container_name: postgres
     image: postgres:latest
