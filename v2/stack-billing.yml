@@ -43,12 +43,12 @@ billingapp_back:
     ports:
       - 8080:8080
 
-# Billing App Frontend Service
-billingapp_front:
-  build:
-    context: ./angular
-  container_name: billingapp_front
-  depends_on:
-    - billingapp_back
-  ports:
-    - 80:80
+  # Billing App Frontend Service
+  billingapp_front:
+    build:
+      context: ./angular
+    container_name: billingapp_front
+    depends_on:
+      - billingapp_back
+    ports:
+      - 80:80
