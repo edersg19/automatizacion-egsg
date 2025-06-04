@@ -1,40 +1,30 @@
-FROM nginx:stable-alpine
+# Usar la imagen base con JRE 17 en Alpine
+FROM eclipse-temurin:17-alpine
 
- # use a volume is mor efficient and speed that filesystem
+# Crear un nuevo grupo llamado "devopsc" para el almacenamiento
+RUN addgroup -g 1028 devopsc \
+    && adduser -D -G devopsc admin
+
+# Crear la carpeta "tmp" para el almacenamiento del cache+
 VOLUME /tmp
 
-#Install web app on nginx server
-RUN rm -rf /usr/share/nginx/html/*
+# Establecer una variable de entorno JAR_FILE para la ruta del archivo
+ARG JAR_FILE 
 
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY dist/billingApp /usr/share/nginx/html
-COPY mime.types /etc/nginx/mime.types
+# Establecer una variable en entorno DB_PASSWORD con el valor del argumento
+ARG DB_PASSWORD
 
+# Agregar las variables al .env
+ENV DB_PASSWORD=$DB_PASSWORD
 
-# Instalamos OpenJDK 17
-RUN apk --no-cache add openjdk17-jre
+# Copiar el archivo JAR
+COPY ${JAR_FILE} /tmp/app.jar
 
-# Definimos la variable de entorno JAVA_HOME
-ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk
-ENV PATH $JAVA_HOME/bin:$PATH
+# Generar los permisos
+RUN chown -R admin:devopsc /tmp
 
-# Verificamos la instalación
-RUN java -version
+# Cambiar el usuario admin
+USER admin
 
-
-#Install java microservice
-ENV JAVA_OPTS=""
-ARG JAR_FILE
-ADD ${JAR_FILE} app.jar
-
-#Copy the init script
-COPY appshell.sh appshell.sh
-
-#The ports 7080 for backend-app and 80 for web app
-EXPOSE 80 7080
-
-ENTRYPOINT ["sh", "/appshell.sh"]
-
-
-
-
+# Ejecutar el JAR para iniciar el contenedor
+ENTRYPOINT ["java", "-jar", "/tmp/app.jar"]
